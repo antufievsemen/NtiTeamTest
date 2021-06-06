@@ -24,11 +24,6 @@ public class PlanetServiceTest {
 
     private static final Planet planet = new Planet(1L, "Mars", null);
 
-    @BeforeAll
-    public static void setUp() {
-        when()
-    }
-
     @Test
     public void addPlanetTest() {
 
