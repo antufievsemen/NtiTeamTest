@@ -35,6 +35,13 @@ public class Lord {
         this.planets = planets;
     }
 
+
+    public Lord(String name, Long years, Set<Planet> planets) {
+        this.name = name;
+        this.years = years;
+        this.planets = planets;
+    }
+
     public Long getId() {
         return id;
     }
@@ -57,5 +64,13 @@ public class Lord {
 
     public void setYears(Long years) {
         this.years = years;
+    }
+
+    public Set<Planet> getPlanets() {
+        return planets;
+    }
+
+    public void setPlanets(Set<Planet> planets) {
+        this.planets = planets;
     }
 }

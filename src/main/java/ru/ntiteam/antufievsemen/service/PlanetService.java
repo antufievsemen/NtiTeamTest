@@ -10,7 +10,6 @@ import ru.ntiteam.antufievsemen.repository.PlanetRepository;
 @Service
 public class PlanetService {
 
-
     private final PlanetRepository planetRepository;
 
     public PlanetService(PlanetRepository planetRepository) {
