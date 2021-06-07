@@ -8,7 +8,7 @@ public class PlanetTest {
 
     @Test
     public void createPlanet() {
-        Planet planet = new Planet(1L, "Mars");
+        Planet planet = new Planet(1L, "Mars", null);
         Assertions.assertEquals(Long.valueOf(1L), planet.getId());
         Assertions.assertEquals("Mars", planet.getName());
     }

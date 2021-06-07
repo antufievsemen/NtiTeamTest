@@ -1,7 +1,9 @@
 package ru.ntiteam.antufievsemen.entity;
 
+import java.util.Objects;
 import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +17,7 @@ public class Lord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true, nullable = false)
     private Long id;
 
     private String name;
@@ -72,5 +75,27 @@ public class Lord {
 
     public void setPlanets(Set<Planet> planets) {
         this.planets = planets;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Lord)) return false;
+        Lord lord = (Lord) o;
+        return Objects.equals(id, lord.id) && Objects.equals(name, lord.name) && Objects.equals(years, lord.years);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, years, planets);
+    }
+
+    @Override
+    public String toString() {
+        return "Lord{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", years=" + years +
+                '}';
     }
 }

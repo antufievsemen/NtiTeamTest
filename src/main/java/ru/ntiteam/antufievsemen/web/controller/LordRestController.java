@@ -27,6 +27,16 @@ public class LordRestController {
         return lordService.getLordById(id).orElseGet( () -> null);
     }
 
+    @GetMapping("/uselessLords")
+    public List<Lord> getUselessLords() {
+        return lordService.getListUselessLords();
+    }
+
+    @GetMapping("/topTenYoungestLords")
+    public List<Lord> getTopTenYoungestLords() {
+        return lordService.getTopTenYoungestLords();
+    }
+
     @GetMapping
     public List<Lord> getLords() {
         return lordService.getLords();
@@ -46,4 +56,6 @@ public class LordRestController {
     public Lord updateLord(@RequestBody Lord lord, @PathVariable Long id) {
         return lordService.updateLord(lord);
     }
+
+
 }

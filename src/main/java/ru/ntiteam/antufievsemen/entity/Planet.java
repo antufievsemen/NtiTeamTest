@@ -1,5 +1,8 @@
 package ru.ntiteam.antufievsemen.entity;
 
+import java.util.Objects;
+import java.util.Set;
+import javax.annotation.PreDestroy;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +17,7 @@ public class Planet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true, nullable = false)
     private Long id;
 
     @Column(unique = true)
@@ -25,11 +29,6 @@ public class Planet {
     public Planet() {
     }
 
-    public Planet(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
     public Planet(String name, Lord lord) {
         this.name = name;
         this.lord = lord;
@@ -39,6 +38,17 @@ public class Planet {
         this.id = id;
         this.name = name;
         this.lord = lord;
+    }
+
+    @PreDestroy
+    public void preDestroy() {
+        Set<Planet> planetSet = this.lord.getPlanets();
+        for (Planet planet : planetSet) {
+            if (planet.getId().equals(this.id)) {
+                planetSet.remove(planet);
+                break;
+            }
+        }
     }
 
     public Long getId() {
@@ -63,5 +73,18 @@ public class Planet {
 
     public void setLord(Lord lord) {
         this.lord = lord;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Planet)) return false;
+        Planet planet = (Planet) o;
+        return id.equals(planet.id) && Objects.equals(name, planet.name) && Objects.equals(lord, planet.lord);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, lord);
     }
 }

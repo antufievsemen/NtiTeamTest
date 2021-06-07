@@ -1,31 +1,121 @@
 package ru.ntiteam.test.antufievsemen.service;
 
-import org.junit.jupiter.api.BeforeAll;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.ntiteam.antufievsemen.entity.Planet;
 import ru.ntiteam.antufievsemen.repository.PlanetRepository;
 import ru.ntiteam.antufievsemen.service.PlanetService;
-import ru.ntiteam.test.antufievsemen.config.ConfigurationTest;
 
-import static org.mockito.Mockito.when;
-
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = ConfigurationTest.class,
-        loader = AnnotationConfigContextLoader.class)
+@SpringBootTest(classes = PlanetService.class)
+@ExtendWith(MockitoExtension.class)
 public class PlanetServiceTest {
 
     @Autowired
     private PlanetService planetService;
 
-    private static final Planet planet = new Planet(1L, "Mars", null);
+    //mock сущность
+    @MockBean
+    private PlanetRepository planetRepository;
+
 
     @Test
     public void addPlanetTest() {
-
+        Planet planet = new Planet(1L, "Mars", null);
+        Mockito.when( planetRepository.saveAndFlush(Mockito.eq(planet))).thenReturn(planet);
+        Planet actualPlanet = planetService.addPlanet(planet);
+        Assertions.assertEquals(actualPlanet, new Planet(1L, "Mars", null));
     }
+
+    @Test
+    public void addPlanetThrowExceptionTest() {
+        Planet planet = new Planet(1L, "Mars", null);
+        Mockito.when( planetRepository.saveAndFlush(Mockito.eq(planet))).thenThrow(new IllegalArgumentException("rollback"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> planetService.addPlanet(planet));
+    }
+
+    @Test
+    public void getPlanetByIdTest() {
+        Planet planet = new Planet(1L, "Mars", null);
+        Optional<Planet> optionalPlanet = Optional.of(planet);
+        Mockito.when(planetRepository.findById(Mockito.eq(planet.getId()))).thenReturn(optionalPlanet);
+        Optional<Planet> actualPlanet = planetRepository.findById(1L);
+        Assertions.assertTrue(actualPlanet.isPresent());
+        Assertions.assertEquals(planet, actualPlanet.get());
+    }
+
+    @Test
+    public void getNullPlanetByIdTest() {
+        Optional<Planet> optionalPlanet = Optional.empty();
+        Mockito.when(planetRepository.findById(Mockito.any())).thenReturn(optionalPlanet);
+        Optional<Planet> actualPlanet = planetRepository.findById(1L);
+        Assertions.assertTrue(actualPlanet.isEmpty());
+    }
+
+    @Test
+    public void deleteExistedPlanetTest() {
+        Planet planet = new Planet(1L, "Mars", null);
+        Optional<Planet> optionalPlanet = Optional.of(planet);
+        Mockito.when(planetRepository.findById(Mockito.eq(planet.getId()))).thenReturn(optionalPlanet);
+        Mockito.doNothing().when(planetRepository).deleteById(optionalPlanet.get().getId());
+//        Mockito.verify(planetRepository, Mockito.times(1)).deleteById(Mockito.any());
+//        Mockito.doNothing().when(planetRepository).deleteById(optionalPlanet.get().getId());
+        Assertions.assertTrue(planetService.deletePlanetById(1L));
+    }
+
+    @Test
+    public void deleteRejectedPlanetTest() {
+        Planet planet = new Planet(1L, "Mars", null);
+        Optional<Planet> optionalPlanet = Optional.empty();
+        Mockito.when(planetRepository.findById(Mockito.eq(planet.getId()))).thenReturn(optionalPlanet);
+        Mockito.doNothing().when(planetRepository).deleteById(Mockito.any());
+//        Mockito.verify(planetRepository, Mockito.times(1)).deleteById(Mockito.any());
+//        Mockito.doNothing().when(planetRepository).deleteById(optionalPlanet.get().getId());
+        Assertions.assertFalse(planetService.deletePlanetById(1L));
+    }
+
+    @Test
+    public void updatePlanetTest() {
+        Planet planet = new Planet(1L, "Mars", null);
+        Mockito.when( planetRepository.saveAndFlush(Mockito.eq(planet))).thenReturn(planet);
+        Planet actualPlanet = planetService.updatePlanet(planet);
+        Assertions.assertEquals(actualPlanet, new Planet(1L, "Mars", null));
+    }
+
+    @Test
+    public void updatePlanetThrowExceptionTest() {
+        Planet planet = new Planet(1L, "Mars", null);
+        Mockito.when( planetRepository.saveAndFlush(Mockito.eq(planet))).thenThrow(new IllegalArgumentException("rollback"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> planetService.updatePlanet(planet));
+    }
+
+    @Test
+    public void getPlanetsTest() {
+        Planet planet1 = new Planet(1L, "Mars", null);
+        Planet planet2 = new Planet(2L, "Earth", null);
+        List<Planet> planets = new ArrayList<>();
+        planets.add(planet1);
+        planets.add(planet2);
+        Mockito.when(planetRepository.findAll()).thenReturn(planets);
+        List<Planet> actualPlanets = planetService.getPlanets();
+        Assertions.assertEquals(planets, actualPlanets);
+    }
+
+    @Test
+    public void getPlanetsEmptyTest() {
+        Mockito.when(planetRepository.findAll()).thenReturn(null);
+        List<Planet> actualPlanets = planetService.getPlanets();
+        Assertions.assertNull(actualPlanets);
+    }
+
 }
+

@@ -11,7 +11,7 @@ public class LordTest {
 
     @Test
     public void createLordTest() {
-        Planet planet = new Planet(1L, "Mars");
+        Planet planet = new Planet(1L, "Mars", null);
         Set<Planet> setPlanets = new HashSet<>();
         setPlanets.add(planet);
         Lord lord = new Lord(1L, "Max", 20L, setPlanets);
@@ -23,7 +23,7 @@ public class LordTest {
 
     @Test
     public void setterLordTest() {
-        Planet planet = new Planet(1L, "Mars");
+        Planet planet = new Planet(1L, "Mars", null);
         Set<Planet> setPlanets = new HashSet<>();
         setPlanets.add(planet);
         Lord lord = new Lord();

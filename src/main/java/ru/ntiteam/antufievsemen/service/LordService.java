@@ -1,5 +1,6 @@
 package ru.ntiteam.antufievsemen.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
@@ -44,5 +45,37 @@ public class LordService {
     @Transactional
     public Lord updateLord(Lord lord) {
         return lordRepository.saveAndFlush(lord);
+    }
+
+    @Transactional
+    public List<Lord> getListUselessLords() {
+        List<Lord> lords = getLords();
+        List<Lord> resultList = new ArrayList<>();
+        for (Lord lord : lords) {
+            if (lord.getPlanets() == null) {
+                resultList.add(lord);
+            }
+        }
+        return resultList;
+    }
+
+    @Transactional
+    public List<Lord> getTopTenYoungestLords() {
+        List<Lord> lords = getLords();
+        List<Lord> resultList = new ArrayList<>();
+        lords.sort((o1, o2) -> {
+            if (o1.getYears() > o2.getYears()) {
+                return 1;
+            } else {
+                if (o1.getYears().equals(o2.getYears())) {
+                    return 0;
+                }
+            }
+            return -1;
+        });
+        for (int i = 0; i < lords.size(); i++) {
+            resultList.add(i, lords.get(i));
+        }
+        return resultList;
     }
 }

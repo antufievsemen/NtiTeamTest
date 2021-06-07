@@ -44,6 +44,7 @@ public class PlanetRestController {
 
     @PutMapping("/{id}")
     public Planet updatePlanet(@RequestBody Planet planet, @PathVariable Long id) {
+        planet.setId(id);
         return planetService.updatePlanet(planet);
     }
 }
