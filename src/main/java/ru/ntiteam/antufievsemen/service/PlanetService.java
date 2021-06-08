@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import ru.ntiteam.antufievsemen.entity.Lord;
 import ru.ntiteam.antufievsemen.entity.Planet;
 import ru.ntiteam.antufievsemen.repository.PlanetRepository;
 

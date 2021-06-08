@@ -11,29 +11,19 @@ public class LordTest {
 
     @Test
     public void createLordTest() {
-        Planet planet = new Planet(1L, "Mars", null);
-        Set<Planet> setPlanets = new HashSet<>();
-        setPlanets.add(planet);
-        Lord lord = new Lord(1L, "Max", 20L, setPlanets);
-        Assertions.assertEquals(Long.valueOf(1), lord.getId());
+        Lord lord = new Lord("Max", 20L);
         Assertions.assertEquals("Max", lord.getName());
         Assertions.assertEquals(Long.valueOf(20), lord.getYears());
-        Assertions.assertTrue(lord.getPlanets().contains(planet));
     }
 
     @Test
     public void setterLordTest() {
-        Planet planet = new Planet(1L, "Mars", null);
-        Set<Planet> setPlanets = new HashSet<>();
-        setPlanets.add(planet);
         Lord lord = new Lord();
         lord.setId(1L);
         lord.setName("Max");
         lord.setYears(16L);
-        lord.setPlanets(setPlanets);
         Assertions.assertEquals(Long.valueOf(1), lord.getId());
         Assertions.assertEquals("Max", lord.getName());
         Assertions.assertEquals(Long.valueOf(16), lord.getYears());
-        Assertions.assertTrue(lord.getPlanets().contains(planet));
     }
 }

@@ -1,13 +1,16 @@
 package ru.ntiteam.antufievsemen.entity;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -24,25 +27,12 @@ public class Lord {
 
     private Long years;
 
-    @JsonIgnore
-    @OneToMany
-    private Set<Planet> planets;
-
     public Lord() {
     }
 
-    public Lord(Long id, String name, Long years, Set<Planet> planets) {
-        this.id = id;
+    public Lord(String name, Long years) {
         this.name = name;
         this.years = years;
-        this.planets = planets;
-    }
-
-
-    public Lord(String name, Long years, Set<Planet> planets) {
-        this.name = name;
-        this.years = years;
-        this.planets = planets;
     }
 
     public Long getId() {
@@ -69,14 +59,6 @@ public class Lord {
         this.years = years;
     }
 
-    public Set<Planet> getPlanets() {
-        return planets;
-    }
-
-    public void setPlanets(Set<Planet> planets) {
-        this.planets = planets;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -87,7 +69,7 @@ public class Lord {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, years, planets);
+        return Objects.hash(id, name, years);
     }
 
     @Override

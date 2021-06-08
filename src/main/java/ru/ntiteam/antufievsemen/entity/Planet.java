@@ -3,11 +3,15 @@ package ru.ntiteam.antufievsemen.entity;
 import java.util.Objects;
 import java.util.Set;
 import javax.annotation.PreDestroy;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -20,7 +24,6 @@ public class Planet {
     @Column(unique = true, nullable = false)
     private Long id;
 
-    @Column(unique = true)
     private String name;
 
     @ManyToOne
@@ -32,23 +35,6 @@ public class Planet {
     public Planet(String name, Lord lord) {
         this.name = name;
         this.lord = lord;
-    }
-
-    public Planet(Long id, String name, Lord lord) {
-        this.id = id;
-        this.name = name;
-        this.lord = lord;
-    }
-
-    @PreDestroy
-    public void preDestroy() {
-        Set<Planet> planetSet = this.lord.getPlanets();
-        for (Planet planet : planetSet) {
-            if (planet.getId().equals(this.id)) {
-                planetSet.remove(planet);
-                break;
-            }
-        }
     }
 
     public Long getId() {
@@ -80,7 +66,7 @@ public class Planet {
         if (this == o) return true;
         if (!(o instanceof Planet)) return false;
         Planet planet = (Planet) o;
-        return id.equals(planet.id) && Objects.equals(name, planet.name) && Objects.equals(lord, planet.lord);
+        return Objects.equals(id, planet.id) && Objects.equals(name, planet.name) && Objects.equals(lord, planet.lord);
     }
 
     @Override

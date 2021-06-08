@@ -49,14 +49,7 @@ public class LordService {
 
     @Transactional
     public List<Lord> getListUselessLords() {
-        List<Lord> lords = getLords();
-        List<Lord> resultList = new ArrayList<>();
-        for (Lord lord : lords) {
-            if (lord.getPlanets() == null) {
-                resultList.add(lord);
-            }
-        }
-        return resultList;
+        return lordRepository.getAllUselessLords();
     }
 
     @Transactional
@@ -75,6 +68,9 @@ public class LordService {
         });
         for (int i = 0; i < lords.size(); i++) {
             resultList.add(i, lords.get(i));
+            if (i == 10) {
+                break;
+            }
         }
         return resultList;
     }

@@ -29,17 +29,25 @@ Vue.component('planet-form', {
         }
     },
     template:
-    '<div>' +
+        '<div>' +
         '<input type="text" placeholder="Write name" v-model="planet_name">' +
         '<input type="text" placeholder="Write id lord" v-model="planet_lord_id">' +
         '<input type="button" value="Save" @click="save"/>' +
-    '</div>',
+        '</div>',
     methods: {
         save: function () {
-            var planet = {
-                name: this.planet_name,
-                lord: {
-                    id: this.planet_lord_id
+            if (this.planet_lord_id) {
+                var planet = {
+                    name: this.planet_name,
+                    lord: {
+                        id: this.planet_lord_id
+                    }
+                }
+
+            } else {
+                var planet = {
+                    name: this.planet_name,
+                    lord: null
                 }
             }
             if (this.id) {
@@ -65,10 +73,11 @@ Vue.component('planet-form', {
             }
         }
     }
-});
+})
+;
 
 Vue.component('planet-row', {
-    props: ['planet','editPlanet', 'planets'],
+    props: ['planet', 'editPlanet', 'planets'],
     data: function () {
         return {
             lord_isNull: true
@@ -79,11 +88,9 @@ Vue.component('planet-row', {
         '<i>' +
         'ID: ({{ planet.id }}), ' +
         '</i> ' +
-
         '<div>' +
         'Planet name: {{ planet.name }}, ' +
         '</div>' +
-
         '<div v-if="lord_isNull">' +
         'Planet Lord name: {{ planet.lord.name }}, ' +
         '</div>' +
@@ -104,7 +111,7 @@ Vue.component('planet-row', {
         delButton: function () {
             planetsApi.remove({id: this.planet.id}).then(result => {
                 if (result.ok) {
-                    this.planets.splice(this.planets.indexOf(this.planets), 1);
+                    this.planets.splice(this.planets.indexOf(this.planet), 1);
                 }
             })
         }
