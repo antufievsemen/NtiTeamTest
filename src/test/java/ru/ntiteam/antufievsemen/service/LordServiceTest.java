@@ -1,9 +1,10 @@
-package ru.ntiteam.test.antufievsemen.service;
+package ru.ntiteam.antufievsemen.service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -13,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.ntiteam.antufievsemen.entity.Lord;
 import ru.ntiteam.antufievsemen.repository.LordRepository;
-import ru.ntiteam.antufievsemen.service.LordService;
 
 @SpringBootTest(classes = LordService.class)
 @ExtendWith(MockitoExtension.class)
@@ -24,6 +24,11 @@ public class LordServiceTest {
 
     @MockBean
     private LordRepository lordRepository;
+
+    @BeforeEach
+    public void resetMocks() {
+        Mockito.reset(lordRepository);
+    }
 
     @Test
     public void addLordTest() {

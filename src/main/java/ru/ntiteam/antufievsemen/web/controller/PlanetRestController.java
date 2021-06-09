@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.ntiteam.antufievsemen.entity.Planet;
 import ru.ntiteam.antufievsemen.service.PlanetService;
 
+
 @RestController
-@RequestMapping("/planet")
+@RequestMapping(value = "/planet")
 public class PlanetRestController {
 
     private final PlanetService planetService;
@@ -24,7 +25,7 @@ public class PlanetRestController {
 
     @GetMapping("/{id}")
     public Planet getPlanetById(@PathVariable Long id) {
-        return planetService.getPlanetById(id).orElseGet( () -> null);
+        return planetService.getPlanetById(id).orElse(null);
     }
 
     @GetMapping

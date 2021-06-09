@@ -1,17 +1,12 @@
 package ru.ntiteam.antufievsemen.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
-import java.util.Set;
-import javax.annotation.PreDestroy;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -22,11 +17,14 @@ public class Planet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
+    @JsonProperty
     private Long id;
 
+    @JsonProperty
     private String name;
 
     @ManyToOne
+    @JsonProperty
     private Lord lord;
 
     public Planet() {

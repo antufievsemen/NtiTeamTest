@@ -1,11 +1,7 @@
-package ru.ntiteam.test.antufievsemen.entity;
+package ru.ntiteam.antufievsemen.entity;
 
-import java.util.HashSet;
-import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.ntiteam.antufievsemen.entity.Lord;
-import ru.ntiteam.antufievsemen.entity.Planet;
 
 public class LordTest {
 

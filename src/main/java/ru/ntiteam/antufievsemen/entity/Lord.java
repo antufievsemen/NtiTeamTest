@@ -1,17 +1,12 @@
 package ru.ntiteam.antufievsemen.entity;
 
-import java.util.HashSet;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
-import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -21,10 +16,13 @@ public class Lord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
+    @JsonProperty
     private Long id;
 
+    @JsonProperty
     private String name;
 
+    @JsonProperty
     private Long years;
 
     public Lord() {

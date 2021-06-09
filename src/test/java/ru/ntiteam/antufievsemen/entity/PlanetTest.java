@@ -1,9 +1,7 @@
-package ru.ntiteam.test.antufievsemen.entity;
+package ru.ntiteam.antufievsemen.entity;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.ntiteam.antufievsemen.entity.Lord;
-import ru.ntiteam.antufievsemen.entity.Planet;
 
 public class PlanetTest {
 

@@ -1,12 +1,12 @@
-package ru.ntiteam.test.antufievsemen.service;
+package ru.ntiteam.antufievsemen.service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.ntiteam.antufievsemen.entity.Planet;
 import ru.ntiteam.antufievsemen.repository.PlanetRepository;
-import ru.ntiteam.antufievsemen.service.PlanetService;
 
 @SpringBootTest(classes = PlanetService.class)
 @ExtendWith(MockitoExtension.class)
@@ -23,10 +22,13 @@ public class PlanetServiceTest {
     @Autowired
     private PlanetService planetService;
 
-    //mock сущность
     @MockBean
     private PlanetRepository planetRepository;
 
+    @BeforeEach
+    public void resetMocks() {
+        Mockito.reset(planetRepository);
+    }
 
     @Test
     public void addPlanetTest() {
@@ -39,7 +41,7 @@ public class PlanetServiceTest {
     @Test
     public void addPlanetThrowExceptionTest() {
         Planet planet = new Planet("Mars", null);
-        Mockito.when( planetRepository.saveAndFlush(Mockito.eq(planet))).thenThrow(new IllegalArgumentException("rollback"));
+        Mockito.when(planetRepository.saveAndFlush(Mockito.eq(planet))).thenThrow(new IllegalArgumentException("rollback"));
         Assertions.assertThrows(IllegalArgumentException.class, () -> planetService.addPlanet(planet));
     }
 
@@ -114,6 +116,5 @@ public class PlanetServiceTest {
         List<Planet> actualPlanets = planetService.getPlanets();
         Assertions.assertNull(actualPlanets);
     }
-
 }
 
